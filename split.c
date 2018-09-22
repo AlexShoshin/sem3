@@ -4,6 +4,7 @@
 
 char* GiveMemoryForString(int len)
 {
+	// Ставьте пробелы вокруг бинарных операторов: len * sizeof(char). Здесь и далее.
 	char* str = (char*)malloc(len*sizeof(char));
 	return str;
 }
@@ -11,6 +12,7 @@ char* GiveMemoryForString(int len)
 char** GiveMemoryForArray(int count, int len)
 {
 	char** array = (char**)malloc(count*sizeof(char*));
+	// надо проверить по-хорошему, что array не NULL
 	int i;
 	for(i = 0; i < count; i++)
 	{
@@ -36,10 +38,12 @@ void Split(char* string, char* delimiter, char** words, int* count)
 	tmp = strtok(string, delimiter);
 	while(tmp != NULL)
 	{
+		// FIXIT: split не должен ничего выводить, только разбивать на слова
 		printf("%s\n", tmp);
 		strcpy(words[i], tmp);
 		i++;
 		tmp = strtok(NULL, delimiter);
+		// можно один раз после цикла в count записать i 
 		*(count) = i;
 	}
 	free(tmp);
