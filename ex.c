@@ -4,7 +4,7 @@
 
 void GenerateString(int n, char* string)
 {
-	char* tmp = (char*)malloc((1<<n)*sizeof(char));
+	char* tmp = (char*)malloc((1 << n) * sizeof(char));
 	string[0] = 'a';
 	string[1] = '\0';
 	char letter = 'a';
@@ -13,17 +13,14 @@ void GenerateString(int n, char* string)
 	{
 		strcpy(tmp, string);
 		letter += 1;
-		string[(1<<i) - 1] = letter;
-		string[(1<<i)] = '\0';
+		string[(1 << i) - 1] = letter;
+		string[(1 << i)] = '\0';
 		strcat(string, tmp);
 	}
 	// 1) printf нужно вынести из ф-и.
 	// 2) << - бинарный оператор, вокруг надо ставить пробелы: 1 << i
 	// 3) кажется, что есть лишние пустые строки
-	printf("%s\n", string);
-	free(tmp);
-
-
+		free(tmp);
 }
 
 int main()
@@ -32,8 +29,7 @@ int main()
 	scanf("%d", &n);
 	char* string = (char*)malloc((1<<n)*sizeof(char));
 	GenerateString(n, string);
-
+	printf("%s\n", string);
 	free(string);
-
 	return 0;
 }
