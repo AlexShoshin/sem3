@@ -5,20 +5,30 @@
 char* GiveMemoryForString(int len)
 {
 	// Ставьте пробелы вокруг бинарных операторов: len * sizeof(char). Здесь и далее.
-	char* str = (char*)malloc(len*sizeof(char));
+	//fixed
+	char* str = (char*)malloc(len * sizeof(char));
 	return str;
 }
 
 char** GiveMemoryForArray(int count, int len)
 {
-	char** array = (char**)malloc(count*sizeof(char*));
+	char** array = (char**)malloc(count * sizeof(char*));
 	// надо проверить по-хорошему, что array не NULL
-	int i;
-	for(i = 0; i < count; i++)
+	//fixed
+	if(array == NULL)
 	{
-		array[i] = (char*)malloc(len*sizeof(char));
+		printf("Error at allocation memory for array!\n");
+		return 0;
 	}
-	return array;
+	else
+	{
+		int i;
+		for(i = 0; i < count; i++)
+		{
+			array[i] = (char*)malloc(len * sizeof(char));
+		}
+		return array;
+	}
 }
 
 void FreeArrayMemory(char** array, int count)
@@ -39,13 +49,14 @@ void Split(char* string, char* delimiter, char** words, int* count)
 	while(tmp != NULL)
 	{
 		// FIXIT: split не должен ничего выводить, только разбивать на слова
-		printf("%s\n", tmp);
+		//fixed
 		strcpy(words[i], tmp);
 		i++;
 		tmp = strtok(NULL, delimiter);
-		// можно один раз после цикла в count записать i 
-		*(count) = i;
+		// можно один раз после цикла в count записать i
+		//fixed
 	}
+	*(count) = i;
 	free(tmp);
 	
 }
@@ -61,7 +72,11 @@ int main()
 	int count = 0;
 	
 	Split(string, delimiter, words, &count);
-	
+	int i;
+	for(i = 0; i < count; i++)
+	{
+		printf("%s\n", words[i]);
+	}
 	free(string);
 	free(delimiter);
 	FreeArrayMemory(words, init_count);
