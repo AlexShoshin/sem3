@@ -17,10 +17,7 @@ void GenerateString(int n, char* string)
 		string[(1 << i)] = '\0';
 		strcat(string, tmp);
 	}
-	// 1) printf нужно вынести из ф-и.
-	// 2) << - бинарный оператор, вокруг надо ставить пробелы: 1 << i
-	// 3) кажется, что есть лишние пустые строки
-		free(tmp);
+	free(tmp);
 }
 
 int main()
