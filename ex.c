@@ -14,7 +14,7 @@ void GenerateString(int n, char* string)
 		strcpy(tmp, string);
 		letter += 1;
 		string[(1 << i) - 1] = letter;
-		string[(1 << i)] = '\0';
+		string[1 << i] = '\0';
 		strcat(string, tmp);
 	}
 	free(tmp);
@@ -24,7 +24,7 @@ int main()
 {
 	int n;
 	scanf("%d", &n);
-	char* string = (char*)malloc((1<<n)*sizeof(char));
+	char* string = (char*)malloc((1 << n) * sizeof(char));
 	GenerateString(n, string);
 	printf("%s\n", string);
 	free(string);
