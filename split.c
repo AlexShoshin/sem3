@@ -2,6 +2,8 @@
 #include <malloc.h>
 #include <string.h>
 
+// FIXIT: магические константы 10, 15, 30, 100 нужно превратить в #define ПОНЯТНОЕ_НАЗВАНИЕ 10 и т.п.
+
 char* GiveMemoryForString(int len)
 {
 	char* str = (char*)malloc(len * sizeof(char));
@@ -48,6 +50,7 @@ void Split(char* string, char* delimiter, char** words, int* count)
 		i++;
 		tmp = strtok(NULL, delimiter);
 	}
+	// Лишние скобки: *count = i; достаточно
 	*(count) = i;
 	free(tmp);
 	
