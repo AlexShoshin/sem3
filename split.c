@@ -2,7 +2,7 @@
 #include <malloc.h>
 #include <string.h>
 
-// FIXIT: магические константы 10, 15, 30, 100 нужно превратить в #define ПОНЯТНОЕ_НАЗВАНИЕ 10 и т.п.
+
 #define STRING_LEN 100
 #define INIT_COUNT 15
 
