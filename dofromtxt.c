@@ -46,7 +46,6 @@ void Split(char* string, char* delimiter, char** words, int* count)
         }
 	*(count) = i;
 	free(tmp);
-
 }
 
 Command*  ReadTxt(int* comcounter, int* timeout)
@@ -73,7 +72,6 @@ Command*  ReadTxt(int* comcounter, int* timeout)
 	Command* comarray = (Command*)malloc(*comcounter * sizeof(Command));
 	for(i = 0; i < *comcounter; i++)
 	{
-
 		fgets(str, STRING_LEN, comfile);
 		comarray[i].name = (char*)malloc(STRING_LEN * sizeof(char));
 		comarray[i].arguments = (char**)malloc(ARG_QUANTITY * sizeof(char*));
@@ -120,12 +118,9 @@ void ExecuteCommands(Command* comarray, int comcounter, int timeout)
 					kill(pid2, SIGKILL);
 					printf("Process %d killed\n", pid2);
 					exit(0);
-
 				}
-				
 			}
 		}
 	}
-
 }
 
