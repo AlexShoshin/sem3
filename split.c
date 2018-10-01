@@ -3,6 +3,8 @@
 #include <string.h>
 
 // FIXIT: магические константы 10, 15, 30, 100 нужно превратить в #define ПОНЯТНОЕ_НАЗВАНИЕ 10 и т.п.
+#define STRING_LEN 100
+#define INIT_COUNT 15
 
 char* GiveMemoryForString(int len)
 {
@@ -42,7 +44,7 @@ void FreeArrayMemory(char** array, int count)
 void Split(char* string, char* delimiter, char** words, int* count)
 {
 	int i = 0;
-	char* tmp = GiveMemoryForString(30);
+	char* tmp = GiveMemoryForString(STRING_LEN);
 	tmp = strtok(string, delimiter);
 	while(tmp != NULL)
 	{
@@ -50,20 +52,18 @@ void Split(char* string, char* delimiter, char** words, int* count)
 		i++;
 		tmp = strtok(NULL, delimiter);
 	}
-	// Лишние скобки: *count = i; достаточно
-	*(count) = i;
+	*count = i;
 	free(tmp);
 	
 }
 
 int main()
 {
-	char* string = GiveMemoryForString(100);
-	fgets(string, 100, stdin);
-	char* delimiter = GiveMemoryForString(10);
-	fgets(delimiter, 10, stdin);
-	int init_count = 15;
-	char**words = GiveMemoryForArray(init_count, 15);
+	char* string = GiveMemoryForString(STRING_LEN);
+	fgets(string, STRING_LEN, stdin);
+	char* delimiter = GiveMemoryForString(STRING_LEN);
+	fgets(delimiter, STRING_LEN, stdin);
+	char**words = GiveMemoryForArray(INIT_COUNT, STRING_LEN);
 	int count = 0;
 	
 	Split(string, delimiter, words, &count);
