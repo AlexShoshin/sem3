@@ -86,6 +86,12 @@ Command*  ReadTxt(int* comcounter, int* timeout)
 		comarray[i].name = comarray[i].arguments[1];
 	}
 	fclose(comfile);
+	free(str);
+	for(i = 0; i < ARG_QUANTITY; i++)
+	{
+		free(words[i]);
+	}
+	free(words);
 	return comarray;
 }
 
