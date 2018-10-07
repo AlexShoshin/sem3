@@ -2,7 +2,6 @@
 #include <malloc.h>
 #include <string.h>
 
-
 #define STRING_LEN 100
 #define INIT_COUNT 15
 
@@ -63,7 +62,7 @@ int main()
 	fgets(string, STRING_LEN, stdin);
 	char* delimiter = GiveMemoryForString(STRING_LEN);
 	fgets(delimiter, STRING_LEN, stdin);
-	char**words = GiveMemoryForArray(INIT_COUNT, STRING_LEN);
+	char** words = GiveMemoryForArray(INIT_COUNT, STRING_LEN);
 	int count = 0;
 	
 	Split(string, delimiter, words, &count);
