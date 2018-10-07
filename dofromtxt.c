@@ -15,12 +15,14 @@ struct Command
 	int time;
 	char* name;
 	char** arguments;
-}typedef Command;
+} typedef Command;
+
+// Может commandCount? Также вместо comarray можно написать commands просто.
+// Вы Split не используете явно в main. Можно убрать объявление совсем, а оставить только определение после main.
 
 void Split(char* string, char* delimiter, char** words, int* count);
-Command*  ReadTxt(int* comcounter, int* timeout);
+Command* ReadTxt(int* comcounter, int* timeout);
 void ExecuteCommands(Command* comarray, int comcounter, int timeout);
-
 
 int main()
 {
@@ -31,7 +33,6 @@ int main()
 
 	return 0;
 }
-
 
 void Split(char* string, char* delimiter, char** words, int* count)
 {
@@ -66,6 +67,8 @@ Command*  ReadTxt(int* comcounter, int* timeout)
 		words[i] = (char*)malloc(STRING_LEN * sizeof(char));
 	}
 	fgets(str, STRING_LEN, comfile);
+	// У вас эта ф-я вышла достаточно громоздкой. Лучше бы вынести её куски в отдельные ф-и, например,
+	// три строки ниже тянут на ParseHeaderLine
 	Split(str, " ", words, &wordcounter);
 	*comcounter = atoi(words[0]);
 	*timeout = atoi(words[1]);
@@ -73,6 +76,7 @@ Command*  ReadTxt(int* comcounter, int* timeout)
 	for(i = 0; i < *comcounter; i++)
 	{
 		fgets(str, STRING_LEN, comfile);
+		// А весь кусок ниже на ParseCommandLine
 		comarray[i].name = (char*)malloc(STRING_LEN * sizeof(char));
 		comarray[i].arguments = (char**)malloc(ARG_QUANTITY * sizeof(char*));
 		for(j = 0; j < ARG_QUANTITY; j++)
@@ -95,8 +99,10 @@ Command*  ReadTxt(int* comcounter, int* timeout)
 	return comarray;
 }
 
+// Мы договаривались про именовании переменных, что первое слово со строчной, остальные с заглавной: commandCount
 void ExecuteCommands(Command* comarray, int comcounter, int timeout)
 {
+	// FIXIT: pid1 и pid2 нужно переименовать в нечто более говорящее о предназначении переменной
 	int pid1, pid2;
 	int status;
 	int i;
