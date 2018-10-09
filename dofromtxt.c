@@ -45,6 +45,29 @@ void Split(char* string, char* delimiter, char** words, int* count)
 	free(tmp);
 }
 
+void ParseHeaderLine(char* str, char** words, int* wordCounter, int* commandCount, int* timeout)
+{
+	Split(str, " ", words, wordCounter);
+	*commandCount = atoi(words[0]);
+	*timeout = atoi(words[1]);
+}
+
+void ParseCommandLine(Command* commands, int i, char* str, int* wordCounter)
+{
+    int j;
+	commands[i].name = (char*)malloc(STRING_LEN * sizeof(char));
+	commands[i].arguments = (char**)malloc(ARG_QUANTITY * sizeof(char*));
+	for(j = 0; j < ARG_QUANTITY; j++)
+	{
+		commands[i].arguments[j] = (char*)malloc(STRING_LEN * sizeof(char));
+	}
+	Split(str, " ", commands[i].arguments, wordCounter);
+	commands[i].arguments[*wordCounter - 1][strlen(commands[i].arguments[*wordCounter - 1]) - 1] = '\0';
+	commands[i].arguments[*wordCounter] = NULL;
+	commands[i].time = atoi(commands[i].arguments[0]);
+	commands[i].name = commands[i].arguments[1];
+}
+
 Command*  ReadTxt(int* commandCount, int* timeout)
 {
 	FILE* commandFile = fopen("command.txt", "r");
@@ -63,12 +86,12 @@ Command*  ReadTxt(int* commandCount, int* timeout)
 		words[i] = (char*)malloc(STRING_LEN * sizeof(char));
 	}
 	fgets(str, STRING_LEN, commandFile);
-	ParseHeaderLine(str, words, wordCounter, commandCounter, timeout);
+	ParseHeaderLine(str, words, &wordCounter, commandCount, timeout);
 	Command* commands = (Command*)malloc(*commandCount * sizeof(Command));
 	for(i = 0; i < *commandCount; i++)
 	{
 		fgets(str, STRING_LEN, commandFile);
-		ParseCommandLine(commands, str, &wordCounter);
+		ParseCommandLine(commands, i, str, &wordCounter);
 	}
 	fclose(commandFile);
 	free(str);
@@ -78,28 +101,6 @@ Command*  ReadTxt(int* commandCount, int* timeout)
 	}
 	free(words);
 	return commands;
-}
-
-void ParseHeaderLine(char* str, char** words, int* wordCounter, int* commandCount, int* timeout)
-{
-	Split(str, " ", words, wordCounter);
-	*commandCount = atoi(words[0]);
-	*timeout = atoi(words[1]);
-}
-
-void ParseCommandLine(Command* commands, char* str, int* wordCounter)
-{
-	commands[i].name = (char*)malloc(STRING_LEN * sizeof(char));
-	commands[i].arguments = (char**)malloc(ARG_QUANTITY * sizeof(char*));
-	for(j = 0; j < ARG_QUANTITY; j++)
-	{
-		commands[i].arguments[j] = (char*)malloc(STRING_LEN * sizeof(char));
-	}
-	Split(str, " ", commands[i].arguments, wordCounter);
-	commands[i].arguments[*wordCounter - 1][strlen(commands[i].arguments[*wordCounter - 1]) - 1] = '\0';
-	commands[i].arguments[*wordCounter] = NULL;
-	commands[i].time = atoi(commands[i].arguments[0]);
-	commands[i].name = commands[i].arguments[1];
 }
 
 void ExecuteCommands(Command* commands, int commandCount, int timeout)
@@ -119,7 +120,7 @@ void ExecuteCommands(Command* commands, int commandCount, int timeout)
 			{
 				execvp(commands[i].name, (commands[i].arguments + 1));
 			}
-			else 
+			else
 			{
 				sleep(timeout);
 				if(waitpid(childProcessId, &status, WNOHANG))
@@ -136,4 +137,3 @@ void ExecuteCommands(Command* commands, int commandCount, int timeout)
 		}
 	}
 }
-
