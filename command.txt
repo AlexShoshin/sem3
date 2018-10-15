@@ -1,6 +1,0 @@
-5 3
-3 ls -al
-1 pwd
-4 ls
-5 gcc test.c -o prog
-6 ./prog
