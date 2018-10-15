@@ -14,18 +14,18 @@ int main(int argc, char* argv[])
 	int size;
 	char name0[] = "aaa.fifo";
 	char name1[] = "aab.fifo";
+	mkfifo(name0, 0777);
 	mkfifo(name1, 0777);
-
-	if(mkfifo(name0, 0777) < 0)
-	{
-		printf("NONONO\n");
-		exit(0);
-	}
 	
 	char* strFromFifo = (char*)malloc(STR_LEN * sizeof(char));
 	char* strFromUser = (char*)malloc(STR_LEN * sizeof(char));
-	int cpid = fork();
-	if(cpid == 0)
+	int procId = fork();
+	if(procId < 0)
+	{
+		printf("Can't create fork!\n");
+		exit(0);
+	}
+	else if(procId == 0)
 	{
 		int fdRead;
 		
@@ -39,13 +39,12 @@ int main(int argc, char* argv[])
 		}
 		if(fdRead == 0)
 		{
-			printf("QWERERREFF");
+			printf("Can't open fifo to read!\n");
 			exit(0);
 		}
 
 		while(1)
 		{
-			printf("Read\n");
 			read(fdRead, strFromFifo, STR_LEN);
 			printf("%s", strFromFifo);
 		}
@@ -66,20 +65,19 @@ int main(int argc, char* argv[])
 		}
 		if(fdWrite == 0)
 		{
-			printf("Wrt=0\n");
+			printf("Can't open fifo to write!\n");
 			exit(0);
 		}
 		while(1)
 		{
-			printf("Writw\n");
 			fgets(strFromUser, STR_LEN, stdin);
 			write(fdWrite, strFromUser, strlen(strFromUser));
 		}
 
 	}
 
-
+	free(strFromUser);
+	free(strFromFifo);
 
 	return 0;
 }
-
