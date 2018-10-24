@@ -29,6 +29,10 @@ int main(int argc, char* argv[])
 	{
 		int fdRead;
 		
+		// Кажется можно ещё подсократить код так
+		// fdRead = open(strcmp(argv[1], "0") == 0 ? name0 : name1, O_RDONLY);
+		// fdWrite = open(strcmp(argv[1], "1") == 0 ? name1 : name0, O_RDONLY);
+		
 		if(strcmp(argv[1], "0") == 0)
 		{
 			fdRead = open(name0, O_RDONLY);
@@ -45,6 +49,7 @@ int main(int argc, char* argv[])
 
 		while(1)
 		{
+			// мы обсуждали, что можно хорошо бы проверить, что вернул read, и если 0, то можно выйти из цикла
 			read(fdRead, strFromFifo, STR_LEN);
 			printf("%s", strFromFifo);
 		}
