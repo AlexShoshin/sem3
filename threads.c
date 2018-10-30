@@ -23,7 +23,7 @@ struct Args
 	float average;
 };
 
-void* calc_Deviations(void* arguments)
+void* СalcDeviations(void* arguments)
 {
 	struct Args th_args = *((struct Args*)arguments);
 	int sum = 0;
@@ -39,7 +39,7 @@ void* calc_Deviations(void* arguments)
 }
 
 
-void* calc_Sums(void* arguments)
+void* СalcSums(void* arguments)
 {
 	struct Args th_args = *((struct Args*)arguments);
 	float sum = 0;
@@ -83,9 +83,10 @@ int main()
 		args[i].sum = &th_sums[i];
 	}
 	clock_t begin = clock();
+	
 	for(i = 0; i < th_quant; i++)
 	{
-		result = pthread_create(&th_ids[i], NULL, calc_Sums, &args[i]);
+		result = pthread_create(&th_ids[i], NULL, СalcSums, &args[i]);
 	}
 	for(i = 0; i < th_quant; i++)
 	{
@@ -103,8 +104,7 @@ int main()
 
 	for(i = 0; i < th_quant; i++)
 	{
-		result = pthread_create(&th_ids[i], NULL,
-			       	calc_Deviations, &args[i]);
+		result = pthread_create(&th_ids[i], NULL, СalcDeviations, &args[i]);
 	}
 	for(i = 0; i < th_quant; i++)
 	{
@@ -121,6 +121,11 @@ int main()
 
 	printf("Average: %f\nDispersion: %f\nTime_spent:%f\n",
 		       	average, dispersion, time_spent);
+	free(array);
+	free(th_deviations);
+	free(th_sums);
+	free(th_ids);
+	free(args);
 
 	return 0;
 }
